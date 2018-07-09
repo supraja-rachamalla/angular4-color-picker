@@ -64,10 +64,12 @@ export class ColorPickerDirective implements OnInit, OnChanges {
     ngOnInit() {
         let hsva = this.service.stringToHsva(this.colorPicker);
         if (hsva === null) hsva = this.service.stringToHsva(this.colorPicker, true);
-        if (hsva == null) {
+        if (hsva == null && this.cpFallbackColor) {
             hsva = this.service.stringToHsva(this.cpFallbackColor);
         }
-        this.colorPickerChange.emit(this.service.outputFormat(hsva, this.cpOutputFormat, this.cpAlphaChannel === 'hex8'));
+        if (hsva) {
+            this.colorPickerChange.emit(this.service.outputFormat(hsva, this.cpOutputFormat, this.cpAlphaChannel === 'hex8'));
+        }
     }
 
     onClick() {
